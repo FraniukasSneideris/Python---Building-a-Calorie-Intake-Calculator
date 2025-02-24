@@ -274,7 +274,7 @@ Enter g of sugar for cupcake every 100 g:
 ```
 Once all the data is entered, you'll get a message that says that the new food was added. This new addition will remain the dictionary, so next time you use the program, you won't need to add the food again!
 
-You'll get a Current Total, and again the program will ask if you want to add more food. When you select "n", you'll get a Final Total, and the program will stop running.
+You'll get a Current Total, and again the program will ask if you want to add more food. When you select "n", you'll get a Final Summary, and the program will stop running.
 ```bash
 ✅ Final Nutritional Summary:
 Calories:           220 kcal

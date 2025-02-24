@@ -223,7 +223,7 @@ class Interactive(Nutrition):
 2. Make sure you have Python installed (Python 3.6 or higher recommended).
 3. Run the script on your preferred IDE:
    ```bash
-   python calorie_calculator.py
+   python calculate_calorie_intake.py
    ```
 4. Interactive Mode:
    You’ll be prompted to enter a food item and its quantity.

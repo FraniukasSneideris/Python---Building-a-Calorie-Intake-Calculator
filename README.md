@@ -1,4 +1,5 @@
 # Python---Building-a-Calorie-Intake-Calculator
+![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ## Project Overview
 This project is an expanded version of a simple calorie intake calculator. It started as a small challenge from a DataCamp project, where the task was to build a single function. However, I wanted to create something more functional, and thus, this fully-fledged calorie intake calculator was born. With this tool, users can easily input food items and quantities, receive nutritional summaries, and even add new food items to the database.

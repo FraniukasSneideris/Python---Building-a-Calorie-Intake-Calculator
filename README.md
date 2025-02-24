@@ -23,7 +23,7 @@ This project is an expanded version of a simple calorie intake calculator. It st
 
 ## Context
 
-What started as a one function script, turned into a more complex OOP structured script. 
+What started as a one function script, turned into a more complex Object-Oriented Programming structured script. 
 
 However, everything has a beginning so let's start there:
 

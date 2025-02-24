@@ -221,7 +221,7 @@ class Interactive(Nutrition):
 ## How to Use
 1. Clone the repository or download the script to your local machine.
 2. Make sure you have Python installed (Python 3.6 or higher recommended).
-3. Run the script:
+3. Run the script on your preferred IDE:
    ```bash
    python calorie_calculator.py
    ```

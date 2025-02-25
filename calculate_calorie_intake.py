@@ -122,8 +122,13 @@ class Interactive(Nutrition):
             print("\n🟢 Current Total:")
             self.print_clean_output(summary)
 
-            continuation = input("\n➕ Would you like to add more food? (y/n): ").strip().lower()
-            if continuation != "y":
+            while True:
+                continuation = input("\n➕ Would you like to add more food? (y/n): ").strip().lower()
+                if continuation in ("y", "n"):
+                    break
+                print("❌ Invalid input. Please enter 'y' to continue or 'n' to stop.")
+
+            if continuation == "n":
                 break
     
         print("\n✅ Final Nutritional Summary:")

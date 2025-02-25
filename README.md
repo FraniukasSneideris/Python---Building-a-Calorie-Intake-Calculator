@@ -219,7 +219,6 @@ class Interactive(Nutrition):
 
             if continuation == "n":
                 break
-
     
         print("\n✅ Final Nutritional Summary:")
         self.print_clean_output(summary)

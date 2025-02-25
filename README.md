@@ -169,6 +169,7 @@ class Nutrition(FoodDatabase):
 ### 3. **Interactive**
 The `Interactive` class extends the `Nutrition` class and handles user interaction via the CLI. In other words, this is where the magic happens!
 - **`interactive_mode()`**: This method manages the main logic of the program, allowing users to input food items, quantities, and interact with the food database. If a food item is not found, users are prompted to add it to the database. It basically handles everything inside a while loop, therefore until the user doesn't decide to stop adding food, the loop will go on. Inside the general while loop, there's a smaller while loop which handles wrong input. That is, when asked to add more food, if you enter anything other than "y" or "n" you'll get a message saying that you need to select either "y" or "n". 
+
   It makes sense that this method calls a lot of the methods from the previous classes, because this it where the interaction with the user happens. So, in a way, everything comes together here.
 ```python
 class Interactive(Nutrition):

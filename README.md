@@ -296,10 +296,10 @@ You'll get a Current Total, and again the program will ask if you want to add mo
 ✅ New food added successfully!
 
 🟢 Current Total:
-Calories:             0 kcal
-Total Fat:            0 g
-Protein:              0 g
-Carbohydrate:         0 g
+Calories:           220 kcal
+Total Fat:           20 g
+Protein:             15 g
+Carbohydrate:         5 g
 Sugars:               0 g
 
 ➕ Would you like to add more food (y/n):

@@ -107,7 +107,7 @@ class FoodDatabase:
 ```
 
 ### 2. **Nutrition**
-The `Nutrition` class inherits from `FoodDatabase` and calculates the nutritional summary of a meal based on the food items and their quantities.
+The `Nutrition` class inherits from `FoodDatabase` and calculates the nutritional summary of a meal based on the food items and their quantities. It includes:
 - **`nutritional_summary()`**: Takes a dictionary of food items and quantities, and computes the total nutritional content. Remember the "unit_conversions" dictionary from the previous class? Well, as mentioned before, this object + the json data are merged together here allowing the method to loop and look for the best match, based on the user input. It also makes the calculation based on the quantity the user entered, and so it returns a dictionary with the nutritional information for the food entered.
 - **`print_clean_output()`**: Displays the nutritional summary in a user-friendly format. Without this function, the output would look something like {'calories': 123, 'total_fat': 34.5, ..}, which is not very user-friendly, right? So that's what this method is for: it transforms the nutritional_summary() output into a nice readable output.
 - **`add_new_food()`**: Allows users to add a new food item to the database with its nutritional details. Quite straightforward: it first checks that indeed the json file is present, and then it uses one of the methods from FoodDatabase to add the new item into the json file.
@@ -168,7 +168,10 @@ class Nutrition(FoodDatabase):
 
 ### 3. **Interactive**
 The `Interactive` class extends the `Nutrition` class and handles user interaction via the CLI. In other words, this is where the magic happens!
-- **`interactive_mode()`**: This method manages the main logic of the program, allowing users to input food items, quantities, and interact with the food database. If a food item is not found, users are prompted to add it to the database. It basically handles everything inside a while loop, therefore until the user doesn't decide to stop adding food, the loop will go on. Inside the general while loop, there's a smaller while loop which handles wrong input. That is, when asked to add more food, if you enter anything other than "y" or "n" you'll get a message saying that you need to select either "y" or "n". 
+
+This class includes:
+- **`handle_invalid_input()`**: This method takes care of invalid inputs, such as words, spaces, numbers, etc, where either "y" or "n" only should be selected. Fun fact: this method was created as I noticed that inside the next method I was repeating some while loops logic. 
+- **`interactive_mode()`**: This method manages the main logic of the program, allowing users to input food items, quantities, and interact with the food database. If a food item is not found, users are prompted to add it to the database. It basically handles everything inside a while loop, therefore until the user doesn't decide to stop adding food, the loop will go on. Inside the general while loop, handle_invalid_input() is called, as to handle wrong input. That is, when asked to add more food or to save new food, if you enter anything other than "y" or "n" you'll get a message saying that the input you entered is invalid. 
 
   It makes sense that this method calls a lot of the methods from the previous classes, because this it where the interaction with the user happens. So, in a way, everything comes together here.
 ```python
@@ -176,6 +179,13 @@ class Interactive(Nutrition):
     def __init__(self, file):
         super().__init__(file)
     
+    def handle_invalid_input(self, emoji, act1, act2):
+        while True:
+            a = input(f"\n{emoji} Would you like to {act1} food (y/n): ").strip().lower()
+            if a in ("y", "n"):
+                return a
+            print(f"❌ Invalid input. Please enter 'y' to {act2}, otherwise enter 'n'.")
+
     def interactive_mode(self):
         meals = defaultdict(float)
 
@@ -193,12 +203,14 @@ class Interactive(Nutrition):
                 quantity = float(quantity)
                 meals[food] += quantity
             except ValueError:
-                print("❌ Invalid quantity. Please enter a number.")
+                print("❌ Invalid quantity. Please enter a number.\n")
                 continue
 
             if food not in self.nutrition_dict:
                 print(f"⚠️ {food} was not found in database.\n")
-                addition = input("Would you like to add this food into the database? (y/n): ").strip().lower()
+                
+                addition = self.handle_invalid_input("💾", "save", "save new food")
+                    
                 if addition == "y":
                     cal = input(f"Enter kcal for {food} every 100 g: ")
                     fat = input(f"Enter g of total fat for {food} every 100 g: ")
@@ -211,11 +223,7 @@ class Interactive(Nutrition):
             print("\n🟢 Current Total:")
             self.print_clean_output(summary)
 
-            while True:
-                continuation = input("\n➕ Would you like to add more food? (y/n): ").strip().lower()
-                if continuation in ("y", "n"):
-                    break
-                print("❌ Invalid input. Please enter 'y' to continue or 'n' to stop.")
+            continuation = self.handle_invalid_input("➕", "add more", "continue")
 
             if continuation == "n":
                 break
@@ -290,7 +298,25 @@ Protein:             40 g
 Carbohydrate:         0 g
 Sugars:               0 g
 ```
+6. Examples when wrong input is entered:
+```bash
+Enter food item: merengue
+Enter quantity for merengue: 200
+⚠️ merengue was not found in database.
 
+
+💾 Would you like to save food (y/n): dsadsad
+❌ Invalid input. Please enter 'y' to save new food, otherwise enter 'n'.
+
+💾 Would you like to save food (y/n): n
+
+🟢 Current Total:
+
+➕ Would you like to add more food (y/n): 12135      
+❌ Invalid input. Please enter 'y' to continue, otherwise enter 'n'.
+
+➕ Would you like to add more food (y/n): 
+```
 ---
 
 ## Conclusion
@@ -298,7 +324,7 @@ This project is a comprehensive Python-based calorie intake calculator designed 
 
 - **Nutritional Summary**: The script calculates the total calories, fats, proteins, carbohydrates, and sugars of the foods entered, based on their quantities.
 - **Food Database**: It includes a pre-defined database with common food items and their nutritional values, with unit conversions available for different measurements (e.g., grams, cups, and individual pieces of food like eggs or bananas).
-- **Error Handling and Flexibility**: If the user enters a food item that isn't in the database, they’re offered the option to add it. This makes the tool more dynamic and constantly evolving.
+- **Error Handling and Flexibility**: If the user enters invalid input, they get a corresponding message and they are asked to try agan. If the food entered has some typo or it resembles some existing data, thanks to the fuzzy-match, the program will continue normally.
 - **Interactive Command-Line Interface (CLI)**: A user-friendly CLI guides users through the process, making it easy for anyone to use regardless of technical expertise.
 - **Extensible Database**: The ability to expand the database by adding new foods directly through the interface means that it can grow as needed to suit different users' diets and preferences.
 - **Detailed and Clear Output**: Nutritional information is printed in a clean, easy-to-read format, with clear distinctions between different categories of nutrients.

@@ -108,9 +108,9 @@ class FoodDatabase:
 
 ### 2. **Nutrition**
 The `Nutrition` class inherits from `FoodDatabase` and calculates the nutritional summary of a meal based on the food items and their quantities.
-- **`nutritional_summary()`**: Takes a dictionary of food items and quantities, and computes the total nutritional content.
-- **`print_clean_output()`**: Displays the nutritional summary in a user-friendly format.
-- **`add_new_food()`**: Allows users to add a new food item to the database with its nutritional details.
+- **`nutritional_summary()`**: Takes a dictionary of food items and quantities, and computes the total nutritional content. Remember the "unit_conversions" dictionary from the previous class? Well, as mentioned before, this object + the json data are merged together here allowing the method to loop and look for the best match, based on the user input. It also makes the calculation based on the quantity the user entered, and so it returns a dictionary with the nutritional information for the food entered.
+- **`print_clean_output()`**: Displays the nutritional summary in a user-friendly format. Without this function, the output would look something like {'calories': 123, 'total_fat': 34.5, ..}, which is not very user-friendly, right? So that's what this method is for: it transforms the nutritional_summary() output into a nice readable output.
+- **`add_new_food()`**: Allows users to add a new food item to the database with its nutritional details. Quite straightforward: it first checks that indeed the json file is present, and then it uses one of the methods from FoodDatabase to add the new item into the json file.
 ```python
 class Nutrition(FoodDatabase):
     def __init__(self, file):
@@ -168,7 +168,7 @@ class Nutrition(FoodDatabase):
 
 ### 3. **Interactive**
 The `Interactive` class extends the `Nutrition` class and handles user interaction via the CLI. In other words, this is where the magic happens!
-- **`interactive_mode()`**: This method manages the main logic of the program, allowing users to input food items, quantities, and interact with the food database. If a food item is not found, users are prompted to add it to the database.
+- **`interactive_mode()`**: This method manages the main logic of the program, allowing users to input food items, quantities, and interact with the food database. If a food item is not found, users are prompted to add it to the database. It makes sense that this method calls a lot of the methods from the previous classes, because this it where the interaction with the user happens. So, in a way, everything comes together here.
 ```python
 class Interactive(Nutrition):
     def __init__(self, file):

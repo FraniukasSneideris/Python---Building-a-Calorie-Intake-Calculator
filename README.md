@@ -269,7 +269,7 @@ Sugars:               0 g
 ➕ Would you like to add more food? (y/n): y
 Enter food item:
 ```
-5. Adding new food:
+5. Saving new food into the database:
 
 Now, let's say you enter a food that's not found in the json database.. If that happens, you'll get the following:
 ```bash
@@ -277,7 +277,7 @@ Enter food item: cupcake
 Enter quantity for cupcake: 1
 ⚠️ cupcake was not found in database.
 
-Would you like to add this food into the database? (y/n):
+💾 Would you like to save food (y/n):
 ```
 If you select "y", then you'll be able to enter the nutritional data for that food macronutrient by macronutrient, like so:
 ```bash

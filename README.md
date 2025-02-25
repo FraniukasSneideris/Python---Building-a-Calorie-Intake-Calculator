@@ -256,7 +256,7 @@ Enter food item:
 ```
 5. Adding new food:
 
-Now, let's say you enter a food that it's not found in the json database.. If that happens, you'll get the following:
+Now, let's say you enter a food that's not found in the json database.. If that happens, you'll get the following:
 ```bash
 Enter food item: cupcake
 Enter quantity for cupcake: 1

@@ -75,7 +75,7 @@ The code is structured using three main classes: `FoodDatabase`, `Nutrition`, an
 
 ### 1. **FoodDatabase**
 The `FoodDatabase` class manages the food database, reading from and writing to the JSON file. It includes:
-- **`unit_conversions`**: A dictionary of common units like eggs, bananas, and cups, with their corresponding weights in grams.
+- **`unit_conversions`**: A dictionary of common units like eggs, bananas, and cups, with their corresponding weights in grams. I added this dictionary into this class, so that the user can enter, for example, "egg - 1", without the need to enter the specific amount of grams 1 egg has. This then is mixed with the json data, in the next class.
 - **`read_file()`**: Reads and loads the food data from a JSON file.
 - **`write_file()`**: Writes updated food data back to the JSON file.
 - **`find_closest_match()`**: Uses `get_close_matches()` to find the closest match for a food item, helping with input errors or slight variations in names.

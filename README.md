@@ -71,7 +71,7 @@ So this is why I decided to write something better..
 ---
 
 ## Final Code
-I wrote a nice script with OOP structure, which uses collections.defaultdict and difflib.get_close_matches, allows for user input, and also allows the user to store new data into the json file if the script does not find a match for the food entered.
+I wrote a nice script with OOP structure, which uses `collections.defaultdict` and `difflib.get_close_matches`, allows for user input, and also allows the user to store new data into the json file if the script does not find a match for the food entered.
 
 The code is structured using three main classes: `FoodDatabase`, `Nutrition`, and `Interactive`. Here's an explanation of each class:
 

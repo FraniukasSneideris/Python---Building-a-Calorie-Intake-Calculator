@@ -281,7 +281,7 @@ Enter quantity for cupcake: 1
 
 💾 Would you like to save food (y/n):
 ```
-If you select "y", then you'll be able to enter the nutritional data for that food macronutrient by macronutrient, like so:
+If you select "y", then you'll be able to enter the nutritional data for that food, like so:
 ```bash
 Enter kcal for cupcake every 100 g: 
 Enter g of total fat for cupcake every 100 g: 

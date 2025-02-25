@@ -291,7 +291,20 @@ Enter g of sugar for cupcake every 100 g:
 ```
 Once all the data is entered, you'll get a message that says that the new food was added. This new addition will remain in the json file, so next time you use the program, you won't need to add the food again!
 
-You'll get a Current Total, and again the program will ask if you want to add more food. When you select "n", you'll get a Final Summary, and the program will stop running.
+You'll get a Current Total, and again the program will ask if you want to add more food. 
+```bash
+✅ New food added successfully!
+
+🟢 Current Total:
+Calories:             0 kcal
+Total Fat:            0 g
+Protein:              0 g
+Carbohydrate:         0 g
+Sugars:               0 g
+
+➕ Would you like to add more food (y/n):
+```
+When you select "n", you'll get a Final Summary, and the program will stop running.
 ```bash
 ✅ Final Nutritional Summary:
 Calories:           220 kcal

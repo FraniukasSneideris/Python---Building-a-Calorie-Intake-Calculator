@@ -83,6 +83,15 @@ The `FoodDatabase` class manages the food database, reading from and writing to 
 - **`find_closest_match()`**: Uses `difflib.get_close_matches()` to find the closest match for a food item, helping with input errors or slight variations in names. This is what's called "fuzzy matching".
 ```python
 class FoodDatabase:
+    """
+    A class to manage food nutrition data from a JSON file.
+    
+    This class provides methods to read, write, and search for food nutrition data, 
+    as well as a dictionary for common food weight conversions.
+    
+    Attributes:
+        unit_conversions (dict): A dictionary mapping common food terms to their approximate weight in grams.
+    """
     unit_conversions = {"egg": 50, "banana": 118, "apple": 200, "orange": 130, "kiwi": 70,
                         "slice of bread": 30, "loaf of bread": 500, "cup of rice": 200, "cup of oats": 80, 
                         "cup of flour": 120, "tablespoon of butter": 14, "tablespoon of peanut butter": 16, 
@@ -90,53 +99,125 @@ class FoodDatabase:
                         "chicken breast": 180, "steak": 250, "fillet of salmon": 200}
 
     def __init__(self, file):
-        self.file = file
+        """
+        Initializes the FoodDatabase by loading nutrition data from a file.
+        
+        Args:
+            file (str): The path to the JSON file containing nutrition data.
+        """
         self.nutrition_dict = self.read_file(file)
         
     def read_file(self, file):
+        """
+        Reads the nutrition data from a JSON file.
+        
+        Args:
+            file (str): The path to the JSON file.
+            
+        Returns:
+                dict: A dictionary containing nutrition data.
+        """
         with open(file, 'r') as json_file:
             nutrition_dict = json.load(json_file)
             return nutrition_dict
         
     def write_file(self, file, data):
+        """
+        Writes updated food data to the JSON file.
+        
+        Args:
+            file (str): The path to the JSON file.
+            data (dict): The new food data to be written to the file.
+            
+        Modifies:
+                The JSON file at the given path.
+        """
         with open(file, "w") as f: 
             json.dump(data, f, indent=4)
             
     def find_closest_match(self, food, food_list):
+        """
+        Finds the closest match for a food item using fuzzy matching.
+        
+        Args:
+            food (str): The food item to search for.
+            food_list (list): A list of available food items.
+            
+        Returns:
+                str or None: The closest matching food item, or None if no match is found.
+        """
         food_list = list(self.nutrition_dict.keys()) + list(self.unit_conversions.keys())
         matches = get_close_matches(food, food_list, n=1, cutoff=0.6)
         return matches[0] if matches else None
 ```
 
 ### 2. **Nutrition**
-The `Nutrition` class inherits from `FoodDatabase` and calculates the nutritional summary of a meal based on the food items and their quantities. It includes:
+The `Nutrition` class which uses a `FoodDatabase` instance and calculates the nutritional summary of a meal based on the food items and their quantities. It includes:
 - **`nutritional_summary()`**: Takes a dictionary of food items and quantities, and computes the total nutritional content. Remember the "unit_conversions" dictionary from the previous class? Well, as mentioned before, this object + the json data are merged together here allowing the method to loop and look for the best match, based on the user input. It also makes the calculation based on the quantity the user entered, and so it returns a dictionary with the nutritional information for the food entered.
 - **`print_clean_output()`**: Displays the nutritional summary in a user-friendly format. Without this function, the output would look something like {'calories': 123, 'total_fat': 34.5, ..}, which is not very user-friendly, right? So that's what this method is for: it transforms the nutritional_summary() output into a nice readable output.
 - **`add_new_food()`**: Allows users to add a new food item to the database with its nutritional details. Quite straightforward: it first checks that indeed the json file is present, and then it uses one of the methods from FoodDatabase to add the new item into the json file.
 ```python
-class Nutrition(FoodDatabase):
+class Nutrition():
+    """
+    A class for calculating and displaying the nutritional summary of meals.
+    
+    This class allows users to:
+      - Compute the total nutritional values for a meal.
+      - Display a formatted nutritional summary.
+      - Add new food items to the nutrition database.
+      
+    Attributes:
+        fdb (FoodDatabase): An instance of FoodDatabase for managing nutrition data.
+    """
     def __init__(self, file):
-        super().__init__(file)
+        """
+        Initializes the Nutrition by loading nutrition data from a file.
         
+        Args:
+            file (str): The path to the JSON file containing nutrition data.
+
+        Attributes:
+            fdb: An instance of FoodDatabase.
+        """
+        self.fdb = FoodDatabase(file)
+
     def nutritional_summary(self, ndict):
+        """
+        Computes the total nutritional content of a meal.
+        
+        Args:
+            ndict (dict): A dictionary where keys are food items (str) and values are quantities (float).
+        
+        Returns:
+            dict: A dictionary containing the total nutritional values for the meal.
+        """
         output_dict = defaultdict(float)  
-        food_list = list(self.nutrition_dict.keys()) + list(self.unit_conversions.keys())  
+        food_list = list(self.fdb.nutrition_dict.keys()) + list(self.fdb.unit_conversions.keys())  
         
         for key, value in ndict.items():
-            matched_key = self.find_closest_match(key, food_list)
+            matched_key = self.fdb.find_closest_match(key, food_list)
             
-            if matched_key in self.unit_conversions:
-                grams = self.unit_conversions[matched_key] * value if value < 10 else value
-                matched_key = self.find_closest_match(matched_key, list(self.nutrition_dict.keys()))
+            if matched_key in self.fdb.unit_conversions:
+                grams = self.fdb.unit_conversions[matched_key] * value if value < 10 else value
+                matched_key = self.fdb.find_closest_match(matched_key, list(self.fdb.nutrition_dict.keys()))
                 value = grams  
 
-            if matched_key in self.nutrition_dict:
-                for k, v in self.nutrition_dict[matched_key].items():
+            if matched_key in self.fdb.nutrition_dict:
+                for k, v in self.fdb.nutrition_dict[matched_key].items():
                     output_dict[k] += (float(v) * value) / 100
 
         return dict(output_dict)
     
     def print_clean_output(self, final_dict):
+        """
+        Prints the nutritional summary in a user-friendly format.
+
+        Args:
+            final_dict (dict): A dictionary containing nutritional values.
+
+        Prints:
+            A formatted nutritional summary.
+        """
         for key, value in final_dict.items():
             
             if key == "calories":
@@ -145,6 +226,23 @@ class Nutrition(FoodDatabase):
                 print(f"{key.replace('_', ' ').title()}:".ljust(17) + f"{int(value):>6} g")
     
     def add_new_food(self, food, cal, fat, prot, carb, sug):
+        """
+        Adds a new food item to the nutrition database.
+
+        Args:
+            food (str): The name of the new food item.
+            cal (float): The kilocalories in the food item.
+            fat (float): The amount of fat (g).
+            prot (float): The amount of protein (g).
+            carb (float): The amount of carbohydrates (g).
+            sug (float): The amount of sugars (g).
+
+        Returns:
+            dict: A dictionary containing the nutritional details of the new food item.
+
+        Modifies:
+            The "nutrition.json" file by adding the new food item.
+        """
         new_item = {
             food: {
                 "calories": cal,
@@ -156,13 +254,13 @@ class Nutrition(FoodDatabase):
         }
         
         try:
-            existing_data = self.read_file("nutrition.json")
+            existing_data = self.fdb.read_file("nutrition.json")
         except (FileNotFoundError, json.JSONDecodeError):  
             existing_data = {}  
             
         existing_data.update(new_item)
-        self.write_file("nutrition.json", existing_data)  
-        self.nutrition_dict.update(new_item)
+        self.fdb.write_file("nutrition.json", existing_data)  
+        self.fdb.nutrition_dict.update(new_item)
         print("✅ New food added successfully!")
         
         return new_item
@@ -177,18 +275,58 @@ This class includes:
 
   It makes sense that this method calls a lot of the methods from the previous classes, because this is where the interaction with the user takes place. So, in a way, everything comes together here.
 ```python
-class Interactive(Nutrition):
+class Interactive:
+    """
+    A class for interactive calorie intake tracking.
+    
+    This class allows users to input food items and their quantities, 
+    check if they exist in the food database, add new food items if needed, 
+    and view a running nutritional summary.
+    
+    Attributes:
+        fdb (FoodDatabase): Instance of FoodDatabase for retrieving nutritional information.
+        nutr (Nutrition): Instance of Nutrition for processing and displaying nutritional data.
+    """
+    
     def __init__(self, file):
-        super().__init__(file)
+        """
+        Initializes the Interactive class with a food database and nutrition processor.
+
+        Args:
+            file (str): The path to the nutrition database file.
+        """
+        self.fdb = FoodDatabase(file)
+        self.nutr = Nutrition(file)
     
     def handle_invalid_input(self, emoji, act1, act2):
+        """
+        Handles invalid user input by prompting for valid responses.
+
+        Args:
+            emoji (str): An emoji to display in the prompt.
+            act1 (str): The primary action described in the prompt.
+            act2 (str): The secondary action for additional clarity.
+
+        Returns:
+            str: 'y' if the user confirms, 'n' otherwise.
+        """
         while True:
             a = input(f"\n{emoji} Would you like to {act1} food (y/n): ").strip().lower()
             if a in ("y", "n"):
                 return a
             print(f"❌ Invalid input. Please enter 'y' to {act2}, otherwise enter 'n'.")
-
+    
     def interactive_mode(self):
+        """
+        Runs the interactive mode for food entry and nutritional tracking.
+
+        Users can input food items, specify quantities, and receive a real-time 
+        nutritional summary. If a food item is not found in the database, they are 
+        given an option to add it manually.
+        
+        Prints:
+            A running total of the user's nutritional intake.
+        """
         meals = defaultdict(float)
 
         print("Welcome to Calorie Intake Calculator! 😊 \n")
@@ -208,7 +346,7 @@ class Interactive(Nutrition):
                 print("❌ Invalid quantity. Please enter a number.\n")
                 continue
 
-            if food not in self.nutrition_dict:
+            if food not in self.fdb.nutrition_dict:
                 print(f"⚠️ {food} was not found in database.\n")
                 
                 addition = self.handle_invalid_input("💾", "save", "save new food")
@@ -219,11 +357,11 @@ class Interactive(Nutrition):
                     prot = input(f"Enter g of protein for {food} every 100 g: ")
                     carb = input(f"Enter g of carbohydrates for {food} every 100 g: ")
                     sug = input(f"Enter g of sugar for {food} every 100 g: ")
-                    self.add_new_food(food, cal, fat, prot, carb, sug)
+                    self.nutr.add_new_food(food, cal, fat, prot, carb, sug)
 
-            summary = self.nutritional_summary(meals)
+            summary = self.nutr.nutritional_summary(meals)
             print("\n🟢 Current Total:")
-            self.print_clean_output(summary)
+            self.nutr.print_clean_output(summary)
 
             continuation = self.handle_invalid_input("➕", "add more", "continue")
 
@@ -231,7 +369,7 @@ class Interactive(Nutrition):
                 break
     
         print("\n✅ Final Nutritional Summary:")
-        self.print_clean_output(summary)
+        self.nutr.print_clean_output(summary)
 ```
 ---
 

@@ -352,11 +352,17 @@ class Interactive:
                 addition = self.handle_invalid_input("💾", "save", "save new food")
                     
                 if addition == "y":
-                    cal = input(f"Enter kcal for {food} every 100 g: ")
-                    fat = input(f"Enter g of total fat for {food} every 100 g: ")
-                    prot = input(f"Enter g of protein for {food} every 100 g: ")
-                    carb = input(f"Enter g of carbohydrates for {food} every 100 g: ")
-                    sug = input(f"Enter g of sugar for {food} every 100 g: ")
+                    while True:
+                        try:
+                            cal = float(input(f"Enter kcal for {food} every 100 g: "))
+                            fat = float(input(f"Enter g of total fat for {food} every 100 g: "))
+                            prot = float(input(f"Enter g of protein for {food} every 100 g: "))
+                            carb = float(input(f"Enter g of carbohydrates for {food} every 100 g: "))
+                            sug = float(input(f"Enter g of sugar for {food} every 100 g: "))
+                            break
+                        except ValueError:
+                            print("⚠️ Please enter valid numbers (whole or decimal values only).\n")
+
                     self.nutr.add_new_food(food, cal, fat, prot, carb, sug)
 
             summary = self.nutr.nutritional_summary(meals)
@@ -426,6 +432,19 @@ Enter g of total fat for cupcake every 100 g:
 Enter g of protein for cupcake every 100 g: 
 Enter g of carbohydrates for cupcake every 100 g: 
 Enter g of sugar for cupcake every 100 g:
+```
+One important thing to mention here, is that if you enter something other than a whole/decimal number in any of the requested nutritional information, you will get a message saying that you need to enter only numbers, and it will be necessary to add the new data again. Like so:
+```bash
+⚠️ cupcake was not found in database.
+
+
+💾 Would you like to save food (y/n): y
+Enter kcal for cupcake every 100 g: 150
+Enter g of total fat for cupcake every 100 g: 40
+Enter g of protein for cupcake every 100 g: ąč9ū90ėęąasdisadji   # input which does not make sense
+⚠️ Please enter valid numbers (whole or decimal values only).
+
+Enter kcal for cupcake every 100 g:
 ```
 Once all the data is entered, you'll get a message that says that the new food was added. This new addition will remain in the json file, so next time you use the program, you won't need to add the food again!
 

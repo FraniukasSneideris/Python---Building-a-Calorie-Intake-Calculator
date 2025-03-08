@@ -433,19 +433,8 @@ Enter g of protein for cupcake every 100 g:
 Enter g of carbohydrates for cupcake every 100 g: 
 Enter g of sugar for cupcake every 100 g:
 ```
-One important thing to mention here, is that if you enter something other than a whole/decimal number in any of the requested nutritional information, you will get a message saying that you need to enter only numbers, and it will be necessary to add the new data again. Like so:
-```bash
-⚠️ cupcake was not found in database.
+One important thing to mention here, is that if you enter something other than a whole/decimal number in any of the requested nutritional information, you will get a message saying that you need to enter only numbers, and it will be necessary to add the new data again. Please refer to 6) to see wrong input examples.
 
-
-💾 Would you like to save food (y/n): y
-Enter kcal for cupcake every 100 g: 150
-Enter g of total fat for cupcake every 100 g: 40
-Enter g of protein for cupcake every 100 g: ąč9ū90ėęąasdisadji   # input which does not make sense
-⚠️ Please enter valid numbers (whole or decimal values only).
-
-Enter kcal for cupcake every 100 g:
-```
 Once all the data is entered, you'll get a message that says that the new food was added. This new addition will remain in the json file, so next time you use the program, you won't need to add the food again!
 
 You'll get a Current Total, and again the program will ask if you want to add more food. 
@@ -488,6 +477,19 @@ Enter quantity for merengue: 200
 ❌ Invalid input. Please enter 'y' to continue, otherwise enter 'n'.
 
 ➕ Would you like to add more food (y/n): 
+```
+Wrong input when adding new nutritional data:
+```bash
+⚠️ cupcake was not found in database.
+
+
+💾 Would you like to save food (y/n): y
+Enter kcal for cupcake every 100 g: 150
+Enter g of total fat for cupcake every 100 g: 40
+Enter g of protein for cupcake every 100 g: ąč9ū90ėęąasdisadji   # input which does not make sense
+⚠️ Please enter valid numbers (whole or decimal values only).
+
+Enter kcal for cupcake every 100 g:
 ```
 ---
 
